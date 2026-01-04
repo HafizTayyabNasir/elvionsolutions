@@ -18,8 +18,8 @@ export async function GET() {
     }));
 
     return NextResponse.json(formatted);
-  } catch (error) {
-    console.error('Get comments error:', error);
+  } catch {
+    console.error('Get comments error');
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
             }
         });
         return NextResponse.json(comment);
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: 'Failed' }, { status: 500 });
     }
 }

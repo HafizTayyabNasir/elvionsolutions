@@ -35,9 +35,9 @@ This project is a Next.js Full Stack application using App Router, Prisma, and T
     *   Push your code to GitHub.
     *   Vercel will automatically detect the Next.js project.
     *   It will run `npm install` and `npm run build`.
-    *   **Migration**: You might need to run migrations against the production DB.
-        *   You can add a "Build Command" override in Vercel: `npx prisma migrate deploy && next build`
-        *   OR run it manually from your local machine if you have access to the production DB string: `DATABASE_URL="your_prod_db_url" npx prisma migrate deploy`
+    *   **Build Command**: Vercel will default to `next build`. You should override it to apply schema changes:
+        *   Command: `npx prisma db push && next build`
+        *   (Note: Do not use `prisma migrate deploy` as this project does not use migration files yet.)
 
 ## Admin User
 
