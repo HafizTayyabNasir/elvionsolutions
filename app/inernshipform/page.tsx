@@ -122,23 +122,26 @@ export default function InternshipForm() {
         }
 
         setIsSubmitting(true);
+        setErrors({}); // Clear previous errors
 
         try {
             // For now, we'll store the file name. In production, you'd upload to S3/Cloudinary/etc.
             const formDataToSend = {
-                fullName: formData.fullName,
-                personalEmail: formData.personalEmail,
-                universityEmail: formData.universityEmail,
+                fullName: formData.fullName.trim(),
+                personalEmail: formData.personalEmail.trim(),
+                universityEmail: formData.universityEmail.trim(),
                 fieldOfInterest: formData.fieldOfInterest,
-                expectations: formData.expectations,
+                expectations: formData.expectations.trim(),
                 cvFileName: formData.cv?.name || null,
                 cvFileUrl: null, // In production, upload file and get URL
             };
 
-            await fetchAPI("/internship", {
+            const response = await fetchAPI("/internship", {
                 method: "POST",
                 body: JSON.stringify(formDataToSend),
             });
+            
+            console.log("Application submitted:", response);
 
             setIsSubmitted(true);
             
@@ -157,11 +160,8 @@ export default function InternshipForm() {
             }, 3000);
         } catch (error: unknown) {
             console.error("Submission error:", error);
-            if (error instanceof Error) {
-                setErrors({ submit: error.message });
-            } else {
-                setErrors({ submit: "Failed to submit application. Please try again." });
-            }
+            const errorMessage = error instanceof Error ? error.message : "Failed to submit application. Please try again.";
+            setErrors({ ...errors, submit: errorMessage });
         } finally {
             setIsSubmitting(false);
         }
@@ -297,7 +297,7 @@ export default function InternshipForm() {
             {/* Form Section */}
             <section className="py-12 pb-20">
                 <div className="max-w-3xl mx-auto px-4">
-                    <div className="bg-[#111] rounded-3xl p-8 md:p-12 border border-white/10 hover:border-[#00d28d]/30 transition-all duration-500 animate-slide-up">
+                    <form onSubmit={handleSubmit} className="bg-[#111] rounded-3xl p-8 md:p-12 border border-white/10 hover:border-[#00d28d]/30 transition-all duration-500 animate-slide-up">
                         {/* Full Name */}
                         <div className="mb-6">
                             <label className="block text-white font-bold mb-2 flex items-center gap-2">
@@ -453,6 +453,15 @@ export default function InternshipForm() {
                             )}
                         </div>
 
+                        {/* Error Message */}
+                        {errors.submit && (
+                            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
+                                <p className="text-red-500 text-sm flex items-center gap-2">
+                                    <AlertCircle size={16} /> {errors.submit}
+                                </p>
+                            </div>
+                        )}
+
                         {/* Submit Button */}
                         <button
                             type="submit"
@@ -491,7 +500,7 @@ export default function InternshipForm() {
                         <p className="text-[#888] text-sm text-center mt-6">
                             <span className="text-red-500">*</span> Required fields. We&apos;ll review your application and get back to you within 3-5 business days.
                         </p>
-                    </div>
+                    </form>
 
                     {/* Info Cards */}
                     <div className="grid md:grid-cols-3 gap-4 mt-8">

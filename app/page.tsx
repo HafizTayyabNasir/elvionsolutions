@@ -19,6 +19,7 @@ import {
   MessageSquare
 } from "lucide-react";
 import { fetchAPI } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
 
 interface Comment {
   id: number;
@@ -40,6 +41,7 @@ const initialComments: Comment[] = [
 ];
 
 export default function Home() {
+  const { user, isAuthenticated } = useAuth();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState(initialComments);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -90,17 +92,18 @@ export default function Home() {
     setLoading(true);
     setStatus("");
     try {
+      const userName = isAuthenticated && user ? (user.name || user.email) : "Guest User";
       await fetchAPI("/comments/", {
         method: "POST",
         body: JSON.stringify({
-          user_name: "Guest User",
+          user_name: userName,
           text: comment,
           date: new Date().toISOString().split('T')[0]
         }),
       });
       const newComment = {
         id: Date.now(),
-        user: "Guest User",
+        user: userName,
         text: comment,
         date: new Date().toISOString().split('T')[0]
       };

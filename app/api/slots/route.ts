@@ -3,29 +3,9 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    const today = new Date().toISOString().split('T')[0];
-    
-    // Check if we have slots for today
-    const count = await prisma.slot.count({
-        where: { date: today }
-    });
-
-    if (count === 0) {
-        // Create slots for today
-        const times = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
-        for (const time of times) {
-            await prisma.slot.create({
-                data: {
-                    date: today,
-                    time: time,
-                    isBooked: false
-                }
-            });
-        }
-    }
-
+    // Only return slots created by admin (no auto-creation)
     const slots = await prisma.slot.findMany({
-        orderBy: [{ date: 'asc' }, { time: 'asc' }]
+      orderBy: [{ date: 'asc' }, { time: 'asc' }]
     });
 
     return NextResponse.json(slots.map(s => ({

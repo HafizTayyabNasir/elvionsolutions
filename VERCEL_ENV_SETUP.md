@@ -29,17 +29,32 @@ Add these environment variables in your Vercel project settings:
 
 ## Database Migration
 
-After adding environment variables, run Prisma migrations:
+### Step 1: Create Migration Locally (One-time)
+
+First, run the migration locally to create the migration files:
 
 ```bash
 npx prisma migrate dev --name add_internship_application
 ```
 
-Or for production:
+This will:
+- Create migration files in `prisma/migrations/`
+- Apply the migration to your local database
+- Generate Prisma Client
 
-```bash
-npx prisma migrate deploy
+### Step 2: Update Vercel Build Command
+
+In your Vercel project settings, update the **Build Command** to:
+
 ```
+npx prisma migrate deploy && next build
+```
+
+**Important Notes:**
+- Use `prisma migrate deploy` (not `migrate dev`) for production builds
+- `migrate deploy` is non-interactive and safe for CI/CD
+- `migrate dev` requires interactive prompts and won't work on Vercel
+- The migration files created locally will be applied during deployment
 
 ## Features Implemented
 
