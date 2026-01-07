@@ -11,7 +11,7 @@ Add these environment variables in your Vercel project settings:
    - Generate a strong random string (e.g., using `openssl rand -base64 32`)
 
 3. **ADMIN_EMAIL** - Admin login email
-   - Example: `admin@elvionsolutions.com`
+   - Example: `team@elvionsolutions.com`
 
 4. **ADMIN_PASSWORD** - Admin login password
    - Use a strong password (will be hashed and stored in database)
@@ -22,7 +22,7 @@ Add these environment variables in your Vercel project settings:
 2. Navigate to Settings → Environment Variables
 3. Add each variable:
    - **Key**: Variable name (e.g., `ADMIN_EMAIL`)
-   - **Value**: Variable value (e.g., `admin@elvionsolutions.com`)
+   - **Value**: Variable value (e.g., `team@elvionsolutions.com`)
    - **Environment**: Select all (Production, Preview, Development)
 4. Click "Save"
 5. Redeploy your application for changes to take effect

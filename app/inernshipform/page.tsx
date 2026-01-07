@@ -46,12 +46,17 @@ export default function InternshipForm() {
     }, []);
 
     const fields = [
-        "Web Development",
-        "UI/UX Design",
-        "Digital Marketing",
+        "Performace Marketing",
+        "Ecommerce",
+        "SEO(Shopify/Wordpress)",
+        "Ai Automations",
+        "Content Creation",
         "Graphic Design",
-        "Content Writing",
-        "Social Media Management"
+        "Video Graphy & Editing",
+        "Social Media Management",
+        "SAS Web/App",
+        "Web Development",
+        "App Development",
     ];
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,9 +94,8 @@ export default function InternshipForm() {
             newErrors.personalEmail = "Please enter a valid email";
         }
 
-        if (!formData.universityEmail.trim()) {
-            newErrors.universityEmail = "University email is required";
-        } else if (!/\S+@\S+\.\S+/.test(formData.universityEmail)) {
+        // University email is optional, but if provided, must be valid
+        if (formData.universityEmail.trim() && !/\S+@\S+\.\S+/.test(formData.universityEmail)) {
             newErrors.universityEmail = "Please enter a valid email";
         }
 
@@ -99,11 +103,7 @@ export default function InternshipForm() {
             newErrors.fieldOfInterest = "Please select a field of interest";
         }
 
-        if (!formData.expectations.trim()) {
-            newErrors.expectations = "Please share your expectations";
-        } else if (formData.expectations.trim().length < 50) {
-            newErrors.expectations = "Please provide at least 50 characters";
-        }
+        // Expectations is optional, no validation needed
 
         if (!formData.cv) {
             newErrors.cv = "Please upload your CV";
@@ -128,9 +128,9 @@ export default function InternshipForm() {
             const formDataToSend = new FormData();
             formDataToSend.append("fullName", formData.fullName.trim());
             formDataToSend.append("personalEmail", formData.personalEmail.trim());
-            formDataToSend.append("universityEmail", formData.universityEmail.trim());
+            formDataToSend.append("universityEmail", formData.universityEmail.trim() || "");
             formDataToSend.append("fieldOfInterest", formData.fieldOfInterest);
-            formDataToSend.append("expectations", formData.expectations.trim());
+            formDataToSend.append("expectations", formData.expectations.trim() || "");
             
             if (formData.cv) {
                 formDataToSend.append("cv", formData.cv);
@@ -364,7 +364,7 @@ export default function InternshipForm() {
                         <div className="mb-6">
                             <label className="block text-white font-bold mb-2 flex items-center gap-2">
                                 <Mail size={18} className="text-[#00d28d]" />
-                                University Email <span className="text-red-500">*</span>
+                                University Email
                             </label>
                             <input
                                 type="email"
@@ -407,7 +407,7 @@ export default function InternshipForm() {
                         <div className="mb-6">
                             <label className="block text-white font-bold mb-2 flex items-center gap-2">
                                 <FileText size={18} className="text-[#00d28d]" />
-                                Why you select this Field? OR What are your expectations with this field? <span className="text-red-500">*</span>
+                                Why you select this Field? OR What are your expectations with this field?
                             </label>
                             <textarea
                                 value={formData.expectations}
@@ -416,14 +416,7 @@ export default function InternshipForm() {
                                 className={`w-full bg-[#0a0a0a] border ${errors.expectations ? 'border-red-500' : 'border-white/10'} rounded-xl p-4 text-white placeholder:text-[#888] focus:outline-none focus:border-[#00d28d] focus:ring-2 focus:ring-[#00d28d]/20 transition-all duration-500 resize-none`}
                                 placeholder="Share your passion, goals, and what you hope to learn during this internship..."
                             />
-                            <div className="flex justify-between items-center mt-2">
-                                {errors.expectations ? (
-                                    <p className="text-red-500 text-sm flex items-center gap-1">
-                                        <AlertCircle size={14} /> {errors.expectations}
-                                    </p>
-                                ) : (
-                                    <p className="text-[#888] text-sm">Minimum 50 characters</p>
-                                )}
+                            <div className="flex justify-end items-center mt-2">
                                 <p className="text-[#888] text-sm">{formData.expectations.length} characters</p>
                             </div>
                         </div>

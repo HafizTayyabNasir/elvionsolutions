@@ -48,9 +48,9 @@ model InternshipApplication {
   id              Int      @id @default(autoincrement())
   fullName        String
   personalEmail   String
-  universityEmail String
+  universityEmail String?
   fieldOfInterest String
-  expectations    String
+  expectations    String?
   cvFileName      String?
   cvFileUrl       String?
   cvFileData      String?  @db.Text // Base64 encoded file data

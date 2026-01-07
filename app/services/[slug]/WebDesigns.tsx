@@ -792,7 +792,7 @@ export default function WebDesigns() {
                             {
                                 icon: Target,
                                 title: "Email Us",
-                                desc: "info@elvionsolutions.com"
+                                desc: "team@elvionsolutions.com"
                             }
                         ].map((contact, idx) => (
                             <div key={idx} className="group cursor-default">

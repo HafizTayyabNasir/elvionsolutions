@@ -57,7 +57,7 @@ export default function Contact() {
                         </div>
                         <div>
                             <p className="text-sm text-gray-400">Email Us</p>
-                            <p className="font-semibold">theelvion@gmail.com</p>
+                            <p className="font-semibold">team@elvionsolutions.com</p>
                         </div>
                     </div>
 

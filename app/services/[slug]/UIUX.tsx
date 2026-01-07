@@ -844,7 +844,7 @@ export default function UIUX() {
                             {
                                 icon: Heart,
                                 title: "Get in Touch",
-                                desc: "design@elvionsolutions.com"
+                                desc: "team@elvionsolutions.com"
                             }
                         ].map((contact, idx) => (
                             <div key={idx} className="group cursor-default">

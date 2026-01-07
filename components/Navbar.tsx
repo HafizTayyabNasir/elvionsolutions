@@ -7,7 +7,6 @@ import { Button } from "./Button";
 import { useAuth } from "@/context/AuthContext";
 
 const navLinks = [
-    { name: "Home", href: "/" },
     { name: "About Us", href: "/about" },
     {
         name: "Web-Designs",

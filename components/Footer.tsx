@@ -1,20 +1,85 @@
-import { Facebook, Instagram, Linkedin, Mail, Phone, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Mail, Phone, Twitter, Youtube } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export const Footer = () => {
     return (
         <footer className="bg-elvion-card border-t border-white/10 pt-16 pb-8">
             <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
                 <div>
-                    <h2 className="text-2xl font-bold text-white mb-4">ELVION<span className="text-elvion-primary">.</span></h2>
+                    <Link href="/" className="inline-flex items-center mb-4">
+                        <Image
+                            src="/logo.webp"
+                            alt="Elvion Logo"
+                            width={1920}
+                            height={720}
+                            className="h-10 w-auto"
+                        />
+                    </Link>
                     <p className="text-elvion-gray text-sm mb-4">
                         We empower brands to grow smarter, faster, and stronger with strategic, creative, and tech-driven solutions.
                     </p>
                     <div className="flex gap-4">
-                        <Facebook className="text-white hover:text-elvion-primary cursor-pointer" size={20} />
-                        <Instagram className="text-white hover:text-elvion-primary cursor-pointer" size={20} />
-                        <Linkedin className="text-white hover:text-elvion-primary cursor-pointer" size={20} />
-                        <Twitter className="text-white hover:text-elvion-primary cursor-pointer" size={20} />
+                        <a 
+                            href="https://web.facebook.com/ElvionSolutions/" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Visit our Facebook page"
+                        >
+                            <Facebook className="text-white hover:text-elvion-primary cursor-pointer transition-colors" size={20} />
+                        </a>
+                        <a 
+                            href="https://www.instagram.com/elvionsolutions" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Visit our Instagram page"
+                        >
+                            <Instagram className="text-white hover:text-elvion-primary cursor-pointer transition-colors" size={20} />
+                        </a>
+                        <a 
+                            href="https://www.linkedin.com/company/elvionsolutions" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Visit our LinkedIn page"
+                        >
+                            <Linkedin className="text-white hover:text-elvion-primary cursor-pointer transition-colors" size={20} />
+                        </a>
+                        <a 
+                            href="https://x.com/elvionsolutions" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Visit our X (Twitter) page"
+                        >
+                            <Twitter className="text-white hover:text-elvion-primary cursor-pointer transition-colors" size={20} />
+                        </a>
+                        <a 
+                            href="https://www.youtube.com/@elvionsolutions" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Visit our YouTube channel"
+                        >
+                            <Youtube className="text-white hover:text-elvion-primary cursor-pointer transition-colors" size={20} />
+                        </a>
+                        <a 
+                            href="https://www.tiktok.com/@elvionsolutions" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            aria-label="Visit our TikTok page"
+                        >
+                            <svg 
+                                className="text-white hover:text-elvion-primary cursor-pointer transition-colors" 
+                                width="20" 
+                                height="20" 
+                                viewBox="0 0 24 24" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                strokeWidth="2" 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round"
+                            >
+                                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.7 2.89 2.89 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
@@ -40,7 +105,7 @@ export const Footer = () => {
                 <div>
                     <h3 className="text-white font-semibold mb-4">Contact</h3>
                     <div className="space-y-3 text-sm text-elvion-gray">
-                        <p className="flex items-center gap-2"><Mail size={16} className="text-elvion-primary" /> theelvion@gmail.com</p>
+                        <p className="flex items-center gap-2"><Mail size={16} className="text-elvion-primary" /> team@elvionsolutions.com</p>
                         <p className="flex items-center gap-2"><Phone size={16} className="text-elvion-primary" /> +92 326 5942996</p>
                         <p className="flex items-center gap-2">🌐 www.elvionsolutions.com</p>
                     </div>

@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = 'admin@elvion.com';
+  const email = 'team@elvionsolutions.com';
   const password = 'adminpassword';
   const name = 'Admin User';
 

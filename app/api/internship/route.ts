@@ -7,9 +7,9 @@ export async function POST(request: Request) {
     
     const fullName = formData.get('fullName') as string;
     const personalEmail = formData.get('personalEmail') as string;
-    const universityEmail = formData.get('universityEmail') as string;
+    const universityEmail = (formData.get('universityEmail') as string) || null;
     const fieldOfInterest = formData.get('fieldOfInterest') as string;
-    const expectations = formData.get('expectations') as string;
+    const expectations = (formData.get('expectations') as string) || null;
     const cvFile = formData.get('cv') as File | null;
 
     let cvFileName: string | null = null;

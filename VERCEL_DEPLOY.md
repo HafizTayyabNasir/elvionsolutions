@@ -53,5 +53,5 @@ Since you cannot run the seed script easily in Vercel's build process without DB
 *   Run `npm run dev` to start the server.
 *   The local database is `dev.db` (SQLite).
 *   Admin credentials (seeded locally):
-    *   Email: `admin@elvion.com`
+    *   Email: `team@elvionsolutions.com`
     *   Password: `adminpassword`
