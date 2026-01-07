@@ -25,11 +25,30 @@ export async function GET(
     // Convert base64 to buffer
     const fileBuffer = Buffer.from(application.cvFileData, 'base64');
     
-    // Determine content type
-    const contentType = application.cvFileType || 'application/octet-stream';
-    
     // Get file extension for proper filename
     const fileName = application.cvFileName || 'cv.pdf';
+    
+    // Determine content type based on file extension if not stored
+    let contentType = application.cvFileType;
+    if (!contentType && fileName) {
+      const ext = fileName.toLowerCase().split('.').pop();
+      switch (ext) {
+        case 'pdf':
+          contentType = 'application/pdf';
+          break;
+        case 'doc':
+          contentType = 'application/msword';
+          break;
+        case 'docx':
+          contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+          break;
+        default:
+          contentType = 'application/octet-stream';
+      }
+    }
+    if (!contentType) {
+      contentType = 'application/octet-stream';
+    }
 
     return new NextResponse(fileBuffer, {
       headers: {
