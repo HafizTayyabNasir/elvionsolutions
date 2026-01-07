@@ -44,17 +44,36 @@ This will:
 
 ### Step 2: Update Vercel Build Command
 
+Since your database already has tables, use `prisma db push` instead:
+
+**Option 1: Use `prisma db push` (Recommended for existing databases)**
+
 In your Vercel project settings, update the **Build Command** to:
 
 ```
-npx prisma migrate deploy && next build
+npx prisma db push && npx prisma generate && next build
 ```
 
-**Important Notes:**
-- Use `prisma migrate deploy` (not `migrate dev`) for production builds
-- `migrate deploy` is non-interactive and safe for CI/CD
-- `migrate dev` requires interactive prompts and won't work on Vercel
-- The migration files created locally will be applied during deployment
+**Why `db push` instead of `migrate deploy`?**
+- Your database already has tables (from previous setup)
+- `db push` syncs schema without requiring migration files
+- Works perfectly with existing databases
+- Non-interactive and safe for CI/CD
+
+**Option 2: If you want to use migrations (for new projects)**
+
+1. First, create a baseline migration locally:
+```bash
+npx prisma migrate dev --name init --create-only
+npx prisma migrate resolve --applied init
+```
+
+2. Then use in Vercel:
+```
+npx prisma migrate deploy && npx prisma generate && next build
+```
+
+**For your current situation, use Option 1 (`db push`)**
 
 ## Features Implemented
 

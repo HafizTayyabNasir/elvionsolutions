@@ -12,7 +12,6 @@ import {
     X,
     Check
 } from "lucide-react";
-import { fetchAPI } from "@/lib/api";
 
 export default function InternshipForm() {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -125,23 +124,46 @@ export default function InternshipForm() {
         setErrors({}); // Clear previous errors
 
         try {
-            // For now, we'll store the file name. In production, you'd upload to S3/Cloudinary/etc.
-            const formDataToSend = {
-                fullName: formData.fullName.trim(),
-                personalEmail: formData.personalEmail.trim(),
-                universityEmail: formData.universityEmail.trim(),
-                fieldOfInterest: formData.fieldOfInterest,
-                expectations: formData.expectations.trim(),
-                cvFileName: formData.cv?.name || null,
-                cvFileUrl: null, // In production, upload file and get URL
-            };
-
-            const response = await fetchAPI("/internship", {
-                method: "POST",
-                body: JSON.stringify(formDataToSend),
-            });
+            // Create FormData to send file
+            const formDataToSend = new FormData();
+            formDataToSend.append("fullName", formData.fullName.trim());
+            formDataToSend.append("personalEmail", formData.personalEmail.trim());
+            formDataToSend.append("universityEmail", formData.universityEmail.trim());
+            formDataToSend.append("fieldOfInterest", formData.fieldOfInterest);
+            formDataToSend.append("expectations", formData.expectations.trim());
             
-            console.log("Application submitted:", response);
+            if (formData.cv) {
+                formDataToSend.append("cv", formData.cv);
+            }
+
+            // Use fetch directly instead of fetchAPI since we need FormData
+            const token = localStorage.getItem("token");
+            const headers: HeadersInit = {};
+            if (token) {
+                headers["Authorization"] = `Bearer ${token}`;
+            }
+            // Don't set Content-Type for FormData - browser will set it with boundary
+
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
+            const response = await fetch(`${API_URL}/internship`, {
+                method: "POST",
+                headers,
+                body: formDataToSend,
+            });
+
+            if (!response.ok) {
+                let message = "";
+                try {
+                    const data = await response.json();
+                    message = data.message || data.error || "Failed to submit application";
+                } catch {
+                    message = "Failed to submit application. Please try again.";
+                }
+                throw new Error(message);
+            }
+
+            const result = await response.json();
+            console.log("Application submitted:", result);
 
             setIsSubmitted(true);
             

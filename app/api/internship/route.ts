@@ -3,7 +3,28 @@ import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
-    const { fullName, personalEmail, universityEmail, fieldOfInterest, expectations, cvFileName, cvFileUrl } = await request.json();
+    const formData = await request.formData();
+    
+    const fullName = formData.get('fullName') as string;
+    const personalEmail = formData.get('personalEmail') as string;
+    const universityEmail = formData.get('universityEmail') as string;
+    const fieldOfInterest = formData.get('fieldOfInterest') as string;
+    const expectations = formData.get('expectations') as string;
+    const cvFile = formData.get('cv') as File | null;
+
+    let cvFileName: string | null = null;
+    let cvFileData: string | null = null;
+    let cvFileType: string | null = null;
+
+    if (cvFile && cvFile.size > 0) {
+      cvFileName = cvFile.name;
+      cvFileType = cvFile.type;
+      
+      // Convert file to base64
+      const arrayBuffer = await cvFile.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      cvFileData = buffer.toString('base64');
+    }
 
     await prisma.internshipApplication.create({
       data: {
@@ -12,8 +33,10 @@ export async function POST(request: Request) {
         universityEmail,
         fieldOfInterest,
         expectations,
-        cvFileName: cvFileName || null,
-        cvFileUrl: cvFileUrl || null,
+        cvFileName,
+        cvFileData,
+        cvFileType,
+        cvFileUrl: null, // Keep for backward compatibility
       },
     });
 

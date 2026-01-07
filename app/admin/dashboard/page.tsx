@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Calendar, MessageSquare, Trash2, Users, LogOut, Plus, Edit2, Save, X, Briefcase, Mail } from "lucide-react";
+import { Calendar, MessageSquare, Trash2, Users, LogOut, Plus, Edit2, Save, X, Briefcase, Mail, Download } from "lucide-react";
 import { Button } from "@/components/Button";
 import { fetchAPI } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
@@ -396,7 +396,46 @@ export default function AdminDashboard() {
                                         {app.cvFileName && (
                                             <div>
                                                 <span className="text-sm text-gray-400">CV:</span>
-                                                <p className="text-elvion-primary">{app.cvFileName}</p>
+                                                <div className="flex items-center gap-3 mt-1">
+                                                    <p className="text-elvion-primary">{app.cvFileName}</p>
+                                                    <button
+                                                        onClick={async () => {
+                                                            try {
+                                                                const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
+                                                                const token = localStorage.getItem("token");
+                                                                const headers: HeadersInit = {};
+                                                                if (token) {
+                                                                    headers["Authorization"] = `Bearer ${token}`;
+                                                                }
+                                                                
+                                                                const response = await fetch(`${API_URL}/internship/${app.id}/cv`, {
+                                                                    headers,
+                                                                });
+                                                                
+                                                                if (!response.ok) {
+                                                                    throw new Error("Failed to download CV");
+                                                                }
+                                                                
+                                                                const blob = await response.blob();
+                                                                const url = window.URL.createObjectURL(blob);
+                                                                const a = document.createElement("a");
+                                                                a.href = url;
+                                                                a.download = app.cvFileName || "cv.pdf";
+                                                                document.body.appendChild(a);
+                                                                a.click();
+                                                                window.URL.revokeObjectURL(url);
+                                                                document.body.removeChild(a);
+                                                            } catch (error) {
+                                                                console.error(error);
+                                                                alert("Failed to download CV");
+                                                            }
+                                                        }}
+                                                        className="flex items-center gap-1 px-3 py-1 bg-elvion-primary/20 hover:bg-elvion-primary/30 text-elvion-primary rounded-lg transition-colors text-sm"
+                                                    >
+                                                        <Download size={14} />
+                                                        Download
+                                                    </button>
+                                                </div>
                                             </div>
                                         )}
                                         <div className="text-xs text-gray-500 pt-2 border-t border-white/5">
