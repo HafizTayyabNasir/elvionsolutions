@@ -38,15 +38,9 @@ export async function GET(
       return NextResponse.json({ message: 'CV file not found' }, { status: 404 });
     }
 
-    // Convert base64 to buffer
-    let fileBuffer;
-    try {
-      fileBuffer = Buffer.from(application.cvFileData, 'base64');
-      console.log('Buffer created, size:', fileBuffer.length);
-    } catch (bufferError) {
-      console.error('Error creating buffer from base64:', bufferError);
-      return NextResponse.json({ message: 'Error processing file data' }, { status: 500 });
-    }
+    // cvFileData is already a Buffer (binary data)
+    const fileBuffer = Buffer.from(application.cvFileData);
+    console.log('Buffer size:', fileBuffer.length);
     
     // Get file extension for proper filename
     const fileName = application.cvFileName || 'cv.pdf';

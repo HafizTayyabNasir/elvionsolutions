@@ -66,8 +66,8 @@ export default function InternshipForm() {
                 setErrors({ ...errors, cv: "File size should be less than 5MB" });
                 return;
             }
-            if (!file.name.match(/\.(pdf|doc|docx)$/)) {
-                setErrors({ ...errors, cv: "Only PDF, DOC, and DOCX files are allowed" });
+            if (!file.name.match(/\.(doc|docx)$/i)) {
+                setErrors({ ...errors, cv: "Only Word files (DOC, DOCX) are allowed" });
                 return;
             }
             setFileName(file.name);
@@ -432,11 +432,11 @@ export default function InternshipForm() {
                                 <label className={`block w-full bg-[#0a0a0a] border-2 ${errors.cv ? 'border-red-500' : 'border-dashed border-white/20'} rounded-xl p-8 text-center cursor-pointer hover:border-[#00d28d] hover:bg-[#00d28d]/5 transition-all duration-500 group`}>
                                     <Upload size={48} className="mx-auto mb-4 text-[#888] group-hover:text-[#00d28d] transition-colors duration-300" />
                                     <p className="text-white font-medium mb-2">Click to upload or drag and drop</p>
-                                    <p className="text-[#888] text-sm">PDF, DOC, DOCX (Max 5MB)</p>
+                                    <p className="text-[#888] text-sm">Word files only - DOC, DOCX (Max 5MB)</p>
                                     <input
                                         type="file"
                                         onChange={handleFileChange}
-                                        accept=".pdf,.doc,.docx"
+                                        accept=".doc,.docx"
                                         className="hidden"
                                     />
                                 </label>
