@@ -18,8 +18,23 @@ import {
   Rocket,
   MessageSquare
 } from "lucide-react";
+import { fetchAPI } from "@/lib/api";
 
-const initialComments = [
+interface Comment {
+  id: number;
+  user: string;
+  text: string;
+  date: string;
+}
+
+interface APIComment {
+  id: number;
+  user_name: string;
+  text: string;
+  date: string;
+}
+
+const initialComments: Comment[] = [
   { id: 1, user: "Ali Khan", text: "Elvion transformed our sales funnel!", date: "2025-11-20" },
   { id: 2, user: "Sarah J.", text: "Best web dev team in Pakistan.", date: "2025-12-05" }
 ];
@@ -29,6 +44,8 @@ export default function Home() {
   const [comments, setComments] = useState(initialComments);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     // Delay the visibility state update to avoid sync state update
@@ -41,22 +58,65 @@ export default function Home() {
     };
     window.addEventListener("mousemove", handleMouseMove);
     
+    // Load comments from API
+    const loadComments = async () => {
+      try {
+        const data = await fetchAPI("/comments/") as APIComment[];
+        if (Array.isArray(data) && data.length > 0) {
+          setComments(data.map((c: APIComment) => ({
+            id: c.id,
+            user: c.user_name || "Guest User",
+            text: c.text,
+            date: c.date
+          })));
+        }
+      } catch (error) {
+        console.error("Failed to load comments:", error);
+      }
+    };
+    loadComments();
+    
     return () => {
       clearTimeout(timer);
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
-  const handleCommentSubmit = () => {
-    if (!comment) return;
-    const newComment = {
-      id: Date.now(),
-      user: "Guest User",
-      text: comment,
-      date: new Date().toISOString().split('T')[0]
-    };
-    setComments([...comments, newComment]);
-    setComment("");
+  const handleCommentSubmit = async () => {
+    if (!comment.trim()) {
+      setStatus("Please enter a comment");
+      return;
+    }
+    setLoading(true);
+    setStatus("");
+    try {
+      await fetchAPI("/comments/", {
+        method: "POST",
+        body: JSON.stringify({
+          user_name: "Guest User",
+          text: comment,
+          date: new Date().toISOString().split('T')[0]
+        }),
+      });
+      const newComment = {
+        id: Date.now(),
+        user: "Guest User",
+        text: comment,
+        date: new Date().toISOString().split('T')[0]
+      };
+      setComments([...comments, newComment]);
+      setComment("");
+      setStatus("Comment posted successfully!");
+      setTimeout(() => setStatus(""), 3000);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setStatus(error.message);
+      } else {
+        setStatus("Failed to post comment");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -535,10 +595,15 @@ export default function Home() {
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
               />
-              <button onClick={handleCommentSubmit} className="group w-full sm:w-auto px-8 py-3 bg-[#00d28d] text-[#0a0a0a] rounded-full font-bold hover-lift relative overflow-hidden animate-glow">
+              {status && <p className={`text-sm ${status.includes("success") ? "text-green-500" : "text-red-500"}`}>{status}</p>}
+              <button 
+                onClick={handleCommentSubmit} 
+                disabled={loading}
+                className="group w-full sm:w-auto px-8 py-3 bg-[#00d28d] text-[#0a0a0a] rounded-full font-bold hover-lift relative overflow-hidden animate-glow disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 <span className="relative z-10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                  Post Comment 
-                  <ArrowRight size={18} className="ml-2 group-hover:translate-x-3 transition-transform duration-300" />
+                  {loading ? "Posting..." : "Post Comment"}
+                  {!loading && <ArrowRight size={18} className="ml-2 group-hover:translate-x-3 transition-transform duration-300" />}
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#00d28d] via-[#00b377] to-[#00d28d] opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[length:200%_100%] animate-gradient"></div>
               </button>

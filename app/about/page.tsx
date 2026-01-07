@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
     Target,
     Eye,
@@ -22,6 +24,7 @@ import {
 } from "lucide-react";
 
 export default function About() {
+    const router = useRouter();
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [activeTab, setActiveTab] = useState("mission");
 
@@ -444,12 +447,14 @@ export default function About() {
                     <p className="text-white/90 text-xl mb-8">
                         Let&apos;s discuss how we can help transform your digital presence
                     </p>
-                    <button className="group bg-white text-[#0a0a0a] hover:bg-white/90 px-8 py-6 rounded-full text-lg font-bold hover-lift relative overflow-hidden">
-                        <span className="relative z-10 flex items-center justify-center">
-                            Get Started Today
-                        </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-white to-[#f0f0f0] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </button>
+                    <Link href="/contact">
+                        <button className="group bg-white text-[#0a0a0a] hover:bg-white/90 px-8 py-6 rounded-full text-lg font-bold hover-lift relative overflow-hidden">
+                            <span className="relative z-10 flex items-center justify-center">
+                                Get Started Today
+                            </span>
+                            <div className="absolute inset-0 bg-gradient-to-r from-white to-[#f0f0f0] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </button>
+                    </Link>
                 </div>
             </section>
         </div>

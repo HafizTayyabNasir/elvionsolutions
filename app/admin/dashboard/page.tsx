@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Calendar, MessageSquare, Trash2, Users, LogOut, Plus, Edit2, Save, X } from "lucide-react";
+import { Calendar, MessageSquare, Trash2, Users, LogOut, Plus, Edit2, Save, X, Briefcase, Mail } from "lucide-react";
 import { Button } from "@/components/Button";
 import { fetchAPI } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
@@ -29,14 +29,36 @@ interface Comment {
     date: string;
 }
 
+interface User {
+    id: number;
+    name: string | null;
+    email: string;
+    isAdmin: boolean;
+    createdAt: string;
+}
+
+interface InternshipApplication {
+    id: number;
+    fullName: string;
+    personalEmail: string;
+    universityEmail: string;
+    fieldOfInterest: string;
+    expectations: string;
+    cvFileName: string | null;
+    cvFileUrl: string | null;
+    createdAt: string;
+}
+
 export default function AdminDashboard() {
     const { user, logout, isAuthenticated, isLoading } = useAuth();
     const router = useRouter();
-    const [activeTab, setActiveTab] = useState<"messages" | "appointments" | "comments">("messages");
+    const [activeTab, setActiveTab] = useState<"messages" | "appointments" | "comments" | "users" | "internships">("messages");
 
     const [messages, setMessages] = useState<Message[]>([]);
     const [slots, setSlots] = useState<Slot[]>([]);
     const [comments, setComments] = useState<Comment[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
+    const [internships, setInternships] = useState<InternshipApplication[]>([]);
 
     const [newSlotDate, setNewSlotDate] = useState("");
     const [newSlotTime, setNewSlotTime] = useState("");
@@ -73,10 +95,24 @@ export default function AdminDashboard() {
                 setComments(data);
             } catch (error) { console.error(error); }
         };
+        const fetchUsers = async () => {
+            try {
+                const data = await fetchAPI("/users");
+                setUsers(data);
+            } catch (error) { console.error(error); }
+        };
+        const fetchInternships = async () => {
+            try {
+                const data = await fetchAPI("/internship");
+                setInternships(data);
+            } catch (error) { console.error(error); }
+        };
 
         if (activeTab === "messages") fetchMessages();
         if (activeTab === "appointments") fetchSlots();
         if (activeTab === "comments") fetchComments();
+        if (activeTab === "users") fetchUsers();
+        if (activeTab === "internships") fetchInternships();
     }, [activeTab, isAuthenticated]);
 
     // Actions
@@ -155,6 +191,14 @@ export default function AdminDashboard() {
 
                     <button onClick={() => setActiveTab("comments")} className={`w-full text-left p-3 rounded-lg flex items-center gap-3 ${activeTab === 'comments' ? 'bg-elvion-primary text-black font-bold' : 'text-gray-400 hover:bg-white/5'}`}>
                         <Users size={18} /> User Comments
+                    </button>
+
+                    <button onClick={() => setActiveTab("users")} className={`w-full text-left p-3 rounded-lg flex items-center gap-3 ${activeTab === 'users' ? 'bg-elvion-primary text-black font-bold' : 'text-gray-400 hover:bg-white/5'}`}>
+                        <Users size={18} /> All Users
+                    </button>
+
+                    <button onClick={() => setActiveTab("internships")} className={`w-full text-left p-3 rounded-lg flex items-center gap-3 ${activeTab === 'internships' ? 'bg-elvion-primary text-black font-bold' : 'text-gray-400 hover:bg-white/5'}`}>
+                        <Briefcase size={18} /> Internship Applications
                     </button>
                 </nav>
 
@@ -262,6 +306,111 @@ export default function AdminDashboard() {
                                     )}
                                 </div>
                             ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* USERS TAB */}
+                {activeTab === "users" && (
+                    <div className="animate-in fade-in">
+                        <h1 className="text-3xl font-bold mb-6">All Users</h1>
+                        <div className="bg-elvion-card border border-white/10 rounded-xl overflow-hidden">
+                            <table className="w-full text-left text-sm text-gray-300">
+                                <thead className="bg-white/5 text-white">
+                                    <tr>
+                                        <th className="p-4">ID</th>
+                                        <th className="p-4">Name</th>
+                                        <th className="p-4">Email</th>
+                                        <th className="p-4">Role</th>
+                                        <th className="p-4">Joined</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {users.map((u) => (
+                                        <tr key={u.id} className="border-b border-white/5 hover:bg-white/5">
+                                            <td className="p-4 text-elvion-primary">{u.id}</td>
+                                            <td className="p-4 text-white font-semibold">{u.name || "N/A"}</td>
+                                            <td className="p-4">{u.email}</td>
+                                            <td className="p-4">
+                                                <span className={`px-2 py-1 rounded text-xs ${u.isAdmin ? 'bg-elvion-primary text-black' : 'bg-gray-600 text-white'}`}>
+                                                    {u.isAdmin ? 'Admin' : 'User'}
+                                                </span>
+                                            </td>
+                                            <td className="p-4 text-gray-400 text-xs">
+                                                {new Date(u.createdAt).toLocaleDateString()}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                )}
+
+                {/* INTERNSHIP APPLICATIONS TAB */}
+                {activeTab === "internships" && (
+                    <div className="animate-in fade-in">
+                        <h1 className="text-3xl font-bold mb-6">Internship Applications</h1>
+                        <div className="grid gap-4">
+                            {internships.map((app) => (
+                                <div key={app.id} className="bg-elvion-card p-6 rounded-xl border border-white/10">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 className="text-xl font-bold text-white mb-2">{app.fullName}</h3>
+                                            <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+                                                <div className="flex items-center gap-2">
+                                                    <Mail size={16} className="text-elvion-primary" />
+                                                    <span>{app.personalEmail}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <Mail size={16} className="text-elvion-primary" />
+                                                    <span>{app.universityEmail}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={async () => {
+                                                if (!confirm("Are you sure you want to delete this application?")) return;
+                                                try {
+                                                    await fetchAPI(`/internship/${app.id}`, { method: "DELETE" });
+                                                    setInternships(internships.filter((a) => a.id !== app.id));
+                                                } catch (error) {
+                                                    console.error(error);
+                                                    alert("Failed to delete");
+                                                }
+                                            }}
+                                            className="text-gray-500 hover:text-red-500"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
+                                    <div className="space-y-3">
+                                        <div>
+                                            <span className="text-sm text-gray-400">Field of Interest:</span>
+                                            <p className="text-white font-semibold">{app.fieldOfInterest}</p>
+                                        </div>
+                                        <div>
+                                            <span className="text-sm text-gray-400">Expectations:</span>
+                                            <p className="text-white">{app.expectations}</p>
+                                        </div>
+                                        {app.cvFileName && (
+                                            <div>
+                                                <span className="text-sm text-gray-400">CV:</span>
+                                                <p className="text-elvion-primary">{app.cvFileName}</p>
+                                            </div>
+                                        )}
+                                        <div className="text-xs text-gray-500 pt-2 border-t border-white/5">
+                                            Applied on: {new Date(app.createdAt).toLocaleString()}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                            {internships.length === 0 && (
+                                <div className="text-center py-12 text-gray-400">
+                                    <Briefcase size={48} className="mx-auto mb-4 opacity-50" />
+                                    <p>No internship applications yet</p>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}

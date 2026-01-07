@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, User, LogOut } from "lucide-react";
 import { Button } from "./Button";
+import { useAuth } from "@/context/AuthContext";
 
 const navLinks = [
     { name: "Home", href: "/" },
@@ -41,11 +42,49 @@ const navLinks = [
         ],
     },
     { name: "Portfolios", href: "/portfolio" },
+    { name: "Internship", href: "/internship" },
 ];
 
 export const Navbar = () => {
+    const { user, logout, isAuthenticated } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+    const [showUserMenu, setShowUserMenu] = useState(false);
+    const userMenuRef = useRef<HTMLDivElement>(null);
+
+    const getInitials = (email: string) => {
+        return email.charAt(0).toUpperCase();
+    };
+
+    const getAvatarColor = (email: string) => {
+        const colors = [
+            "bg-[#00d28d]",
+            "bg-[#4a90e2]",
+            "bg-purple-500",
+            "bg-pink-500",
+            "bg-orange-500",
+            "bg-red-500",
+        ];
+        const index = email.charCodeAt(0) % colors.length;
+        return colors[index];
+    };
+
+    // Close user menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+                setShowUserMenu(false);
+            }
+        };
+
+        if (showUserMenu) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showUserMenu]);
 
     return (
         <nav className="fixed z-50 w-full border-b border-white/10 bg-elvion-dark/95 backdrop-blur-md">
@@ -116,9 +155,48 @@ export const Navbar = () => {
                         <Link href="/appointment">
                             <Button className="px-4 py-2 text-sm">Get Appointment</Button>
                         </Link>
-                        <Link href="/login" className="text-sm font-semibold text-white hover:text-elvion-primary">
-                            Login
-                        </Link>
+                        {isAuthenticated && user ? (
+                            <div className="relative" ref={userMenuRef}>
+                                <button
+                                    onClick={() => setShowUserMenu(!showUserMenu)}
+                                    className="flex items-center gap-2 text-sm font-semibold text-white hover:text-elvion-primary"
+                                >
+                                    <div className={`w-8 h-8 rounded-full ${getAvatarColor(user.email)} flex items-center justify-center text-white font-bold`}>
+                                        {getInitials(user.email)}
+                                    </div>
+                                </button>
+                                {showUserMenu && (
+                                    <div className="absolute right-0 mt-2 w-48 bg-elvion-card border border-white/10 rounded-lg shadow-xl z-50">
+                                        <div className="p-3 border-b border-white/10">
+                                            <p className="text-white font-semibold text-sm">{user.name || user.email}</p>
+                                            <p className="text-gray-400 text-xs">{user.email}</p>
+                                        </div>
+                                        {user.is_admin && (
+                                            <Link
+                                                href="/admin/dashboard"
+                                                className="block px-4 py-2 text-sm text-gray-300 hover:bg-elvion-primary hover:text-black transition-colors"
+                                                onClick={() => setShowUserMenu(false)}
+                                            >
+                                                Admin Dashboard
+                                            </Link>
+                                        )}
+                                        <button
+                                            onClick={() => {
+                                                logout();
+                                                setShowUserMenu(false);
+                                            }}
+                                            className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-400/10 transition-colors flex items-center gap-2"
+                                        >
+                                            <LogOut size={16} /> Logout
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <Link href="/login" className="text-sm font-semibold text-white hover:text-elvion-primary">
+                                Login
+                            </Link>
+                        )}
                     </div>
 
                     <div className="lg:hidden">
@@ -166,9 +244,36 @@ export const Navbar = () => {
                         <Link href="/appointment" onClick={() => setIsOpen(false)}>
                             <Button className="w-full">Get Appointment</Button>
                         </Link>
-                        <Link href="/login" className="block py-2 text-center text-white" onClick={() => setIsOpen(false)}>
-                            Login / Signup
-                        </Link>
+                        {isAuthenticated && user ? (
+                            <div className="space-y-2">
+                                <div className="p-3 bg-elvion-dark rounded-lg border border-white/10">
+                                    <p className="text-white font-semibold text-sm">{user.name || user.email}</p>
+                                    <p className="text-gray-400 text-xs">{user.email}</p>
+                                </div>
+                                {user.is_admin && (
+                                    <Link
+                                        href="/admin/dashboard"
+                                        className="block py-2 text-center text-elvion-primary hover:bg-elvion-primary/10 rounded-lg transition-colors"
+                                        onClick={() => setIsOpen(false)}
+                                    >
+                                        Admin Dashboard
+                                    </Link>
+                                )}
+                                <button
+                                    onClick={() => {
+                                        logout();
+                                        setIsOpen(false);
+                                    }}
+                                    className="w-full py-2 text-center text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        ) : (
+                            <Link href="/login" className="block py-2 text-center text-white" onClick={() => setIsOpen(false)}>
+                                Login / Signup
+                            </Link>
+                        )}
                     </div>
                 </div>
             )}

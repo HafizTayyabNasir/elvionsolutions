@@ -43,3 +43,16 @@ model Comment {
   date      DateTime @default(now())
   createdAt DateTime @default(now())
 }
+
+model InternshipApplication {
+  id              Int      @id @default(autoincrement())
+  fullName        String
+  personalEmail   String
+  universityEmail String
+  fieldOfInterest String
+  expectations    String
+  cvFileName      String?
+  cvFileUrl       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
