@@ -401,6 +401,7 @@ export default function AdminDashboard() {
                                                     <button
                                                         onClick={async () => {
                                                             try {
+                                                                console.log('Downloading CV for application:', app.id);
                                                                 const API_URL = process.env.NEXT_PUBLIC_API_URL || "/api";
                                                                 const token = localStorage.getItem("token");
                                                                 const headers: HeadersInit = {};
@@ -412,11 +413,18 @@ export default function AdminDashboard() {
                                                                     headers,
                                                                 });
                                                                 
+                                                                console.log('Response status:', response.status);
+                                                                console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+                                                                
                                                                 if (!response.ok) {
-                                                                    throw new Error("Failed to download CV");
+                                                                    const errorText = await response.text();
+                                                                    console.error('Error response:', errorText);
+                                                                    throw new Error(`Failed to download CV: ${response.status} ${errorText}`);
                                                                 }
                                                                 
                                                                 const blob = await response.blob();
+                                                                console.log('Blob created:', blob.size, blob.type);
+                                                                
                                                                 const url = window.URL.createObjectURL(blob);
                                                                 const a = document.createElement("a");
                                                                 a.href = url;
@@ -425,9 +433,10 @@ export default function AdminDashboard() {
                                                                 a.click();
                                                                 window.URL.revokeObjectURL(url);
                                                                 document.body.removeChild(a);
+                                                                console.log('Download initiated successfully');
                                                             } catch (error) {
-                                                                console.error(error);
-                                                                alert("Failed to download CV");
+                                                                console.error('Download error:', error);
+                                                                alert(`Failed to download CV: ${error instanceof Error ? error.message : 'Unknown error'}`);
                                                             }
                                                         }}
                                                         className="flex items-center gap-1 px-3 py-1 bg-elvion-primary/20 hover:bg-elvion-primary/30 text-elvion-primary rounded-lg transition-colors text-sm"
