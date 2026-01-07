@@ -13,16 +13,17 @@ export async function POST(request: Request) {
     const cvFile = formData.get('cv') as File | null;
 
     let cvFileName: string | null = null;
-    let cvFileData: Buffer | null = null;
+    let cvFileData: string | null = null;
     let cvFileType: string | null = null;
 
     if (cvFile && cvFile.size > 0) {
       cvFileName = cvFile.name;
       cvFileType = cvFile.type;
       
-      // Convert file to Buffer (binary data)
+      // Convert file to base64
       const arrayBuffer = await cvFile.arrayBuffer();
-      cvFileData = Buffer.from(arrayBuffer);
+      const buffer = Buffer.from(arrayBuffer);
+      cvFileData = buffer.toString('base64');
     }
 
     await prisma.internshipApplication.create({
