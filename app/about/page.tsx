@@ -371,13 +371,14 @@ export default function About() {
                                 key={idx}
                                 className="group bg-[#111] p-6 rounded-2xl border border-white/10 hover:border-[#00d28d]/50 transition-all duration-500 hover-lift text-center"
                             >
-                                <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-[#00d28d]/30 group-hover:border-[#00d28d] group-hover:scale-110 transition-all duration-500">
+                                <div className="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden border-4 border-[#00d28d]/30 group-hover:border-[#00d28d] group-hover:scale-105 transition-all duration-500">
                                     <Image
                                         src={member.image}
                                         alt={member.name}
-                                        width={128}
-                                        height={128}
+                                        width={200}
+                                        height={200}
                                         className="w-full h-full object-cover"
+                                        quality={100}
                                         priority
                                     />
                                 </div>
