@@ -21,6 +21,8 @@ import {
     Star,
     Coffee,
     Clock,
+    Linkedin,
+    Briefcase,
     Shield
 } from "lucide-react";
 
@@ -38,10 +40,10 @@ export default function About() {
     }, []);
 
     const teamMembers = [
-        { name: "Muhammad Zohaib Tabassum", role: "CEO & Founder", image: "/Zohaib_Tabassum.webp" },
-        { name: "Muhammad Tayyab", role: "Co-Founder & CTO", image: "/Muhammad_Tayyab.webp" },
-        { name: "Husnain Mehmood", role: "Co-Founder & Marketing Manager", image: "/Husnain_Mehmood.webp" },
-        { name: "Hammad Ahmad", role: "Co-Founder & Marketing Head", image: "/Hammad_Ahmad.webp" }
+        { name: "Muhammad Zohaib Tabassum", role: "CEO & Founder", image: "/Zohaib_Tabassum.webp", linkedin: "https://www.linkedin.com/in/mzohaibtabassum-softwareengineer/" },
+        { name: "Muhammad Tayyab", role: "Co-Founder & CTO", image: "/Muhammad_Tayyab.webp", linkedin: "https://www.linkedin.com/in/muhammad-tayyab-sofwareengineer/" },
+        { name: "Husnain Mehmood", role: "Co-Founder & Marketing Manager", image: "/Husnain_Mehmood.webp", linkedin: "https://www.linkedin.com/in/husnain-mehmood-b977362bb/" },
+        { name: "Hammad Ahmad", role: "Co-Founder & Marketing Head", image: "/Hammad_Ahmad.webp", linkedin: "https://www.linkedin.com/in/hammad-ahmad-0b1b3b1b3/" }
     ];
 
     const coreValues = [
@@ -385,9 +387,25 @@ export default function About() {
                                 <h3 className="text-xl font-bold text-white mb-1 group-hover:text-[#00d28d] transition-colors duration-300">
                                     {member.name}
                                 </h3>
-                                <p className="text-[#888] text-sm group-hover:text-[#aaa] transition-colors duration-300">
+                                <p className="text-[#888] text-sm group-hover:text-[#aaa] transition-colors duration-300 mb-4">
                                     {member.role}
                                 </p>
+
+                                {/* LinkedIn and Portfolio Buttons */}
+                                <div className="flex justify-center gap-3">
+                                    <Link href={member.linkedin || "#"} target="_blank" rel="noopener noreferrer">
+                                        <button className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-white bg-[#0077B5] hover:bg-[#005582] rounded-full transition-colors duration-300">
+                                            <Linkedin size={14} />
+                                            LinkedIn
+                                        </button>
+                                    </Link>
+                                    <Link href="/portfolio">
+                                        <button className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-[#0a0a0a] bg-[#00d28d] hover:bg-[#00a86f] rounded-full transition-colors duration-300">
+                                            <Briefcase size={14} />
+                                            Portfolio
+                                        </button>
+                                    </Link>
+                                </div>
                             </div>
                         ))}
                     </div>
