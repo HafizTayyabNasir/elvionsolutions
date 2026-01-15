@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Layout, CheckCircle2, Users, Eye, Zap, Palette, Target, Award, Globe, Clock, Heart, Star, Rocket, Smartphone } from "lucide-react";
+import { ArrowRight, Layout, CheckCircle2, Users, Eye, Zap, Palette, Target, Award, Globe, Clock, Heart, Star, Rocket, Smartphone, TrendingUp } from "lucide-react";
 import { Button } from "@/components/Button";
 
 export const WebsiteUIUX = () => {
