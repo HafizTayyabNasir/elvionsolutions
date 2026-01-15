@@ -29,13 +29,14 @@ model Message {
 }
 
 model Slot {
-  id        Int      @id @default(autoincrement())
-  date      String   // YYYY-MM-DD
-  time      String   // HH:mm
-  isBooked  Boolean  @default(false)
-  bookedBy  String?  // Email of user who booked
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  date         String   // YYYY-MM-DD
+  time         String   // HH:mm
+  isBooked     Boolean  @default(false)
+  bookedBy     String?  // Email of user who booked
+  bookedByName String?  // Name of user who booked
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Comment {
