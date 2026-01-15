@@ -10,6 +10,9 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Elvion Solutions | Digital Growth Partner",
   description: "Web Development, SEO, & Digital Marketing Agency",
+  icons: {
+    icon: "/favicon.webp",
+  },
 };
 
 export default function RootLayout({
