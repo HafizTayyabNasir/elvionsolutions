@@ -394,8 +394,8 @@ export default function About() {
                                 {/* LinkedIn and Portfolio Buttons */}
                                 <div className="flex justify-center gap-3">
                                     <Link href={member.linkedin || "#"} target="_blank" rel="noopener noreferrer">
-                                        <button className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-white bg-[#0077B5] hover:bg-[#005582] rounded-full transition-colors duration-300">
-                                            <Linkedin size={14} />
+                                        <button className="group flex items-center gap-2 px-4 py-2 text-xs font-medium text-white bg-transparent border border-white/20 hover:border-[#00d28d] hover:bg-[#00d28d]/10 rounded-full transition-all duration-300">
+                                            <Linkedin size={14} className="group-hover:text-[#00d28d] transition-colors duration-300" />
                                             LinkedIn
                                         </button>
                                     </Link>
