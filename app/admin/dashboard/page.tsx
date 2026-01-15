@@ -20,6 +20,8 @@ interface Slot {
     date: string;
     time: string;
     is_booked: boolean;
+    booked_by?: string | null;
+    booked_by_name?: string | null;
 }
 
 interface Comment {
@@ -259,17 +261,32 @@ export default function AdminDashboard() {
                         </div>
 
                         {/* View Slots */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {slots.map((slot) => (
-                                <div key={slot.id} className="bg-elvion-card p-4 rounded-xl border border-white/10 flex justify-between items-center">
-                                    <div>
-                                        <p className="text-elvion-gray text-xs">{slot.date}</p>
-                                        <p className="text-white text-lg font-bold">{slot.time}</p>
-                                        <span className={`text-xs px-2 py-1 rounded mt-1 inline-block ${slot.is_booked ? 'bg-red-400/10 text-red-400' : 'bg-elvion-primary/10 text-elvion-primary'}`}>
+                                <div key={slot.id} className="bg-elvion-card p-4 rounded-xl border border-white/10 flex flex-col">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <div>
+                                            <p className="text-elvion-gray text-xs">{slot.date}</p>
+                                            <p className="text-white text-lg font-bold">{slot.time}</p>
+                                        </div>
+                                        <button onClick={() => handleDeleteSlot(slot.id)} className="text-gray-500 hover:text-red-500"><Trash2 size={18} /></button>
+                                    </div>
+                                    <div className="mt-auto">
+                                        <span className={`text-xs px-2 py-1 rounded inline-block ${slot.is_booked ? 'bg-red-400/10 text-red-400' : 'bg-elvion-primary/10 text-elvion-primary'}`}>
                                             {slot.is_booked ? 'Booked' : 'Available'}
                                         </span>
+                                        {slot.is_booked && (slot.booked_by || slot.booked_by_name) && (
+                                            <div className="mt-3 pt-3 border-t border-white/5">
+                                                <p className="text-xs text-gray-400 mb-1">Booked by:</p>
+                                                {slot.booked_by_name && (
+                                                    <p className="text-white font-semibold text-sm">{slot.booked_by_name}</p>
+                                                )}
+                                                {slot.booked_by && (
+                                                    <p className="text-elvion-primary text-xs">{slot.booked_by}</p>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
-                                    <button onClick={() => handleDeleteSlot(slot.id)} className="text-gray-500 hover:text-red-500"><Trash2 size={18} /></button>
                                 </div>
                             ))}
                         </div>
@@ -408,23 +425,23 @@ export default function AdminDashboard() {
                                                                 if (token) {
                                                                     headers["Authorization"] = `Bearer ${token}`;
                                                                 }
-                                                                
+
                                                                 const response = await fetch(`${API_URL}/internship/${app.id}/cv`, {
                                                                     headers,
                                                                 });
-                                                                
+
                                                                 console.log('Response status:', response.status);
                                                                 console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-                                                                
+
                                                                 if (!response.ok) {
                                                                     const errorText = await response.text();
                                                                     console.error('Error response:', errorText);
                                                                     throw new Error(`Failed to download CV: ${response.status} ${errorText}`);
                                                                 }
-                                                                
+
                                                                 const blob = await response.blob();
                                                                 console.log('Blob created:', blob.size, blob.type);
-                                                                
+
                                                                 const url = window.URL.createObjectURL(blob);
                                                                 const a = document.createElement("a");
                                                                 a.href = url;
