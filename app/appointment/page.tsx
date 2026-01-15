@@ -11,6 +11,8 @@ interface Slot {
     date: string;
     time: string;
     is_booked: boolean;
+    booked_by?: string | null;
+    booked_by_name?: string | null;
 }
 
 export default function Appointment() {
@@ -19,8 +21,10 @@ export default function Appointment() {
     const [selectedDate, setSelectedDate] = useState("");
     const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
     const [slots, setSlots] = useState<Slot[]>([]);
+    const [myBookings, setMyBookings] = useState<Slot[]>([]);
     const [submitted, setSubmitted] = useState(false);
     const [loadingSlots, setLoadingSlots] = useState(true);
+    const [loadingMyBookings, setLoadingMyBookings] = useState(true);
 
     useEffect(() => {
         const loadSlots = async () => {
@@ -36,6 +40,24 @@ export default function Appointment() {
         loadSlots();
     }, []);
 
+    useEffect(() => {
+        const loadMyBookings = async () => {
+            if (!isAuthenticated) {
+                setLoadingMyBookings(false);
+                return;
+            }
+            try {
+                const data = await fetchAPI("/slots/my-bookings");
+                setMyBookings(data);
+            } catch (error) {
+                console.error("Failed to load my bookings", error);
+            } finally {
+                setLoadingMyBookings(false);
+            }
+        };
+        loadMyBookings();
+    }, [isAuthenticated]);
+
     const availableSlots = slots.filter(
         (slot) => slot.date === selectedDate && !slot.is_booked
     );
@@ -49,9 +71,11 @@ export default function Appointment() {
                 method: "PUT",
             });
             setSubmitted(true);
-            // Refresh slots
+            // Refresh slots and my bookings
             const data = await fetchAPI("/slots/");
             setSlots(data);
+            const myBookingsData = await fetchAPI("/slots/my-bookings");
+            setMyBookings(myBookingsData);
         } catch (error) {
             console.error("Booking failed:", error);
             alert("Failed to book slot. It might be taken or you need to login again.");
@@ -76,6 +100,36 @@ export default function Appointment() {
                 <h1 className="text-4xl font-bold text-white">Book a Free Consultation</h1>
                 <p className="text-elvion-gray mt-2">Select a time slot that works for you.</p>
             </div>
+
+            {/* My Bookings Section */}
+            {isAuthenticated && (
+                <div className="bg-elvion-card p-6 rounded-2xl border border-white/10 shadow-2xl mb-6">
+                    <h2 className="text-2xl font-bold text-white mb-4">My Bookings</h2>
+                    {loadingMyBookings ? (
+                        <div className="text-center text-gray-400 py-4">Loading your bookings...</div>
+                    ) : myBookings.length === 0 ? (
+                        <div className="text-center py-6 text-gray-400">
+                            <p>You haven't booked any appointments yet.</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {myBookings.map((booking) => (
+                                <div key={booking.id} className="bg-elvion-dark p-4 rounded-xl border border-white/10">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <p className="text-elvion-primary text-sm font-semibold">{booking.date}</p>
+                                            <p className="text-white text-xl font-bold mt-1">{booking.time}</p>
+                                        </div>
+                                        <span className="text-xs px-3 py-1 rounded bg-elvion-primary/20 text-elvion-primary">
+                                            Confirmed
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
 
             <div className="bg-elvion-card p-8 rounded-2xl border border-white/10 shadow-2xl">
                 {isLoading ? (
