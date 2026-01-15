@@ -59,6 +59,11 @@ export default function Login() {
                             className="w-full bg-elvion-dark border border-white/10 p-3 rounded-lg text-white"
                             required
                         />
+                        <div className="flex justify-end mt-1">
+                            <Link href="/forgot-password" className="text-sm text-elvion-primary hover:underline">
+                                Forgot Password?
+                            </Link>
+                        </div>
                     </div>
                     <Button className="w-full mt-4" disabled={loading}>
                         {loading ? "Logging in..." : "Login"}
