@@ -57,7 +57,7 @@ export const ProtoTyping = () => {
                         <p className="text-[#888] text-lg md:text-xl max-w-3xl mx-auto">Test and validate your ideas before development. Create interactive prototypes that bring your vision to life and save development costs.</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
                             <Link href="/contact"><Button className="px-8 py-6 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-bold animate-glow">Start Prototyping <ArrowRight size={20} className="ml-2" /></Button></Link>
-                            <Button className="px-8 py-6 bg-transparent border-2 border-white/20 hover:border-purple-500 rounded-full font-bold">View Prototypes</Button>
+                            <Button className="px-8 py-6 bg-transparent text-white border-2 border-white/20 hover:border-purple-500 rounded-full font-bold">View Prototypes</Button>
                         </div>
                         <div className="flex flex-wrap justify-center gap-8 pt-12">
                             {stats.map((stat, idx) => (

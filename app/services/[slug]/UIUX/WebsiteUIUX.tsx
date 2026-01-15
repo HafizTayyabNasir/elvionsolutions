@@ -57,7 +57,7 @@ export const WebsiteUIUX = () => {
                         <p className="text-[#888] text-lg md:text-xl max-w-3xl mx-auto">Create engaging digital experiences. We design user-friendly interfaces that guide visitors and improve conversion rates dramatically.</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
                             <Link href="/contact"><Button className="px-8 py-6 bg-purple-600 hover:bg-purple-700 text-white rounded-full font-bold animate-glow">Start Design Project <ArrowRight size={20} className="ml-2" /></Button></Link>
-                            <Button className="px-8 py-6 bg-transparent border-2 border-white/20 hover:border-purple-500 rounded-full font-bold">View Portfolio</Button>
+                            <Button className="px-8 py-6 bg-transparent text-white border-2 border-white/20 hover:border-purple-500 rounded-full font-bold">View Portfolio</Button>
                         </div>
                         <div className="flex flex-wrap justify-center gap-8 pt-12">
                             {stats.map((stat, idx) => (

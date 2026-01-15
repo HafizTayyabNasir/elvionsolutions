@@ -74,7 +74,7 @@ export const PorfolioWebsite = () => {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
                             <Link href="/contact"><Button className="px-8 py-6 bg-[#00d28d] hover:bg-[#00b377] text-[#0a0a0a] rounded-full font-bold animate-glow">Start Your Portfolio <ArrowRight size={20} className="ml-2" /></Button></Link>
-                            <Button className="px-8 py-6 bg-transparent border-2 border-white/20 hover:border-[#00d28d] rounded-full font-bold">View Examples</Button>
+                            <Button className="px-8 py-6 bg-transparent text-white border-2 border-white/20 hover:border-[#00d28d] rounded-full font-bold">View Examples</Button>
                         </div>
                         <div className="flex flex-wrap justify-center gap-8 pt-12">
                             {stats.map((stat, idx) => (

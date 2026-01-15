@@ -57,7 +57,7 @@ export const SMM = () => {
                         <p className="text-[#888] text-lg md:text-xl max-w-3xl mx-auto">Build a loyal community and engage with your audience across all major social platforms. Drive brand awareness and conversions.</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
                             <Link href="/contact"><Button className="px-8 py-6 bg-[#4a90e2] hover:bg-[#3a80d2] text-white rounded-full font-bold animate-glow">Start Growing <ArrowRight size={20} className="ml-2" /></Button></Link>
-                            <Button className="px-8 py-6 bg-transparent border-2 border-white/20 hover:border-[#4a90e2] rounded-full font-bold">View Success Stories</Button>
+                            <Button className="px-8 py-6 bg-transparent text-white border-2 border-white/20 hover:border-[#4a90e2] rounded-full font-bold">View Success Stories</Button>
                         </div>
                         <div className="flex flex-wrap justify-center gap-8 pt-12">
                             {stats.map((stat, idx) => (

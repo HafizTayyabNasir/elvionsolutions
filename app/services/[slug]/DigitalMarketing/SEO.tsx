@@ -57,7 +57,7 @@ export const SEO = () => {
                         <p className="text-[#888] text-lg md:text-xl max-w-3xl mx-auto">Improve your visibility on Google and drive organic traffic. Our SEO strategies are data-driven and results-oriented to grow your business.</p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
                             <Link href="/contact"><Button className="px-8 py-6 bg-[#4a90e2] hover:bg-[#3a80d2] text-white rounded-full font-bold animate-glow">Get Free SEO Audit <ArrowRight size={20} className="ml-2" /></Button></Link>
-                            <Button className="px-8 py-6 bg-transparent border-2 border-white/20 hover:border-[#4a90e2] rounded-full font-bold">View Case Studies</Button>
+                            <Button className="px-8 py-6 bg-transparent text-white border-2 border-white/20 hover:border-[#4a90e2] rounded-full font-bold">View Case Studies</Button>
                         </div>
                         <div className="flex flex-wrap justify-center gap-8 pt-12">
                             {stats.map((stat, idx) => (

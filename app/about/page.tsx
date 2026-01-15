@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
     Target,
@@ -37,10 +38,10 @@ export default function About() {
     }, []);
 
     const teamMembers = [
-        { name: "Muhammad Zohaib", role: "CEO & Founder", icon: Rocket },
-        { name: "Muhammad Tayyab", role: "Co-Founder & CTO", icon: PenTool },
-        { name: "Husnain Mehmood", role: "Co-Founder & Marketing Manager", icon: Code },
-        { name: "Hammad Ahmad", role: "Co-Founder & Marketing Head", icon: TrendingUp }
+        { name: "Muhammad Zohaib Tabassum", role: "CEO & Founder", image: "/Zohaib_Tabassum.webp" },
+        { name: "Muhammad Tayyab", role: "Co-Founder & CTO", image: "/Muhammad_Tayyab.webp" },
+        { name: "Husnain Mehmood", role: "Co-Founder & Marketing Manager", image: "/Husnain_Mehmood.webp" },
+        { name: "Hammad Ahmad", role: "Co-Founder & Marketing Head", image: "/Hammad_Ahmad.webp" }
     ];
 
     const coreValues = [
@@ -370,8 +371,15 @@ export default function About() {
                                 key={idx}
                                 className="group bg-[#111] p-6 rounded-2xl border border-white/10 hover:border-[#00d28d]/50 transition-all duration-500 hover-lift text-center"
                             >
-                                <div className="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-[#00d28d] to-[#4a90e2] rounded-full flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-                                    <member.icon size={36} className="text-white" />
+                                <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden border-4 border-[#00d28d]/30 group-hover:border-[#00d28d] group-hover:scale-110 transition-all duration-500">
+                                    <Image
+                                        src={member.image}
+                                        alt={member.name}
+                                        width={128}
+                                        height={128}
+                                        className="w-full h-full object-cover"
+                                        priority
+                                    />
                                 </div>
                                 <h3 className="text-xl font-bold text-white mb-1 group-hover:text-[#00d28d] transition-colors duration-300">
                                     {member.name}
