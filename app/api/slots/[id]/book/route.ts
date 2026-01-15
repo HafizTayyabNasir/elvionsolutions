@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 export async function PUT(
   request: Request,
@@ -7,11 +10,25 @@ export async function PUT(
 ) {
   try {
     const { id } = await params;
-    const { searchParams } = new URL(request.url);
-    const user_email = searchParams.get('user_email');
+    
+    // Auth Check
+    const authHeader = request.headers.get('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
 
-    if (!user_email) {
-        return NextResponse.json({ message: 'User email required' }, { status: 400 });
+    const token = authHeader.split(' ')[1];
+    let userEmail: string | null = null;
+    
+    try {
+        const decoded: any = jwt.verify(token, JWT_SECRET);
+        userEmail = decoded.email;
+    } catch (error) {
+        return NextResponse.json({ message: 'Invalid token' }, { status: 401 });
+    }
+
+    if (!userEmail) {
+        return NextResponse.json({ message: 'User email not found in token' }, { status: 400 });
     }
 
     const slotId = parseInt(id);
@@ -33,7 +50,7 @@ export async function PUT(
         where: { id: slotId },
         data: {
             isBooked: true,
-            bookedBy: user_email
+            bookedBy: userEmail
         }
     });
 
