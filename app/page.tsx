@@ -47,7 +47,7 @@ const teamMembers = [
   { name: "Muhammad Zohaib Tabassum", role: "CEO & Founder", image: "/Zohaib_Tabassum.webp", linkedin: "https://www.linkedin.com/in/mzohaibtabassum-softwareengineer/" },
   { name: "Muhammad Tayyab", role: "Co-Founder & CTO", image: "/Muhammad_Tayyab.webp", linkedin: "https://www.linkedin.com/in/muhammad-tayyab-sofwareengineer/" },
   { name: "Husnain Mehmood", role: "Co-Founder & Marketing Manager", image: "/Husnain_Mehmood.webp", linkedin: "https://www.linkedin.com/in/husnain-mehmood-b977362bb/" },
-  { name: "Hammad Ahmad", role: "Co-Founder & Marketing Head", image: "/Hammad_Ahmad.webp", linkedin: "https://www.linkedin.com/in/hammad-ahmad-0b1b3b1b3/" }
+  { name: "Hammad Ahmad", role: "Co-Founder & ___________", image: "/Hammad_Ahmad.webp", linkedin: "https://www.linkedin.com/in/hammad-ahmad-0b1b3b1b3/" }
 ];
 
 export default function Home() {
