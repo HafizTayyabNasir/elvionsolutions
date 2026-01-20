@@ -327,11 +327,12 @@ export default function Home() {
             {/* Trust Indicators */}
             <div className={`flex flex-wrap justify-center gap-8 pt-12 text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '0.9s' }}>
               {[
-                { value: "500+", label: "Projects Delivered" },
-                { value: "98%", label: "Client Satisfaction" },
+                { value: "350+", label: "Projects Delivered" },
+                { value: "100%", label: "Client Satisfaction" },
+                { value: "50+", label: "Active Clients" },
                 { value: "24/7", label: "Support Available" }
               ].map((stat, idx) => (
-                <div key={idx} className="space-y-1 group cursor-default hover-lift">
+                <div key={idx} className="space-y-1 group cursor-default">
                   <div className="text-3xl font-bold text-[#00d28d] group-hover:scale-125 transition-all duration-500 animate-scale-pulse" style={{ animationDelay: `${idx * 0.2}s` }}>
                     {stat.value}
                   </div>
