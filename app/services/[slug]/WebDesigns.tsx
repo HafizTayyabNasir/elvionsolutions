@@ -27,7 +27,9 @@ import {
     Settings,
     Monitor,
     Search,
-    Lock
+    Lock,
+    Cloud,
+    Briefcase
 } from "lucide-react";
 
 export default function WebDesigns() {
@@ -93,7 +95,22 @@ export default function WebDesigns() {
             icon: Target,
             features: ["Conversion Focused", "A/B Testing", "Analytics Integration"],
             color: "from-[#4a90e2]/20 to-[#00d28d]/20"
+        },
+        {
+            title: "Software as a Service (SaaS)",
+            desc: "Scalable SaaS platforms designed for performance, security, and seamless user experiences.",
+            icon: Cloud,
+            features: ["Multi-Tenant Architecture", "Subscription Billing", "Role-Based Access"],
+            color: "from-[#00d28d]/20 to-[#4a90e2]/20"
+        },
+        {
+            title: "ERP Systems",
+            desc: "Integrated ERP solutions to manage business processes, data, and operations efficiently.",
+            icon: Briefcase,
+            features: ["Process Automation", "Centralized Data", "Custom Modules"], 
+            color: "from-[#4a90e2]/20 to-[#00d28d]/20"
         }
+
     ];
 
     const technologies = [
@@ -107,7 +124,7 @@ export default function WebDesigns() {
 
     const designProcess = [
         { number: "01", icon: Target, title: "Discovery", desc: "Understanding your goals and requirements" },
-        { number: "02", icon: PenTool, title: "Design", desc: "Creating stunning visual concepts" },
+        { number: "02", icon: PenTool, title: "Design", desc: "Creating stunning visuals designs" },
         { number: "03", icon: Code, title: "Development", desc: "Building with cutting-edge tech" },
         { number: "04", icon: Search, title: "Testing", desc: "Ensuring flawless performance" },
         { number: "05", icon: Rocket, title: "Launch", desc: "Deploying your success" }
@@ -701,8 +718,8 @@ export default function WebDesigns() {
                             <div
                                 key={idx}
                                 className={`group bg-[#111] p-8 rounded-2xl border transition-all duration-700 hover-lift cursor-default relative overflow-hidden ${plan.popular
-                                        ? 'border-[#00d28d]/60 scale-105'
-                                        : 'border-white/10 hover:border-[#00d28d]/40'
+                                    ? 'border-[#00d28d]/60 scale-105'
+                                    : 'border-white/10 hover:border-[#00d28d]/40'
                                     }`}
                             >
                                 {plan.popular && (
@@ -733,8 +750,8 @@ export default function WebDesigns() {
                                 </ul>
 
                                 <button className={`w-full py-3 rounded-full font-bold transition-all duration-500 ${plan.popular
-                                        ? 'bg-[#00d28d] text-[#0a0a0a] hover:bg-[#00b377] hover-lift'
-                                        : 'bg-white/5 text-white hover:bg-[#00d28d] hover:text-[#0a0a0a] hover-lift'
+                                    ? 'bg-[#00d28d] text-[#0a0a0a] hover:bg-[#00b377] hover-lift'
+                                    : 'bg-white/5 text-white hover:bg-[#00d28d] hover:text-[#0a0a0a] hover-lift'
                                     }`}>
                                     Get Started
                                 </button>

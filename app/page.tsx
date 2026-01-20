@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   BarChart,
@@ -16,7 +17,9 @@ import {
   Users,
   Award,
   Rocket,
-  MessageSquare
+  MessageSquare,
+  Linkedin,
+  Briefcase
 } from "lucide-react";
 import { fetchAPI } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
@@ -40,6 +43,13 @@ const initialComments: Comment[] = [
   { id: 2, user: "Sarah J.", text: "Best web dev team in Pakistan.", date: "2025-12-05" }
 ];
 
+const teamMembers = [
+  { name: "Muhammad Zohaib Tabassum", role: "CEO & Founder", image: "/Zohaib_Tabassum.webp", linkedin: "https://www.linkedin.com/in/mzohaibtabassum-softwareengineer/" },
+  { name: "Muhammad Tayyab", role: "Co-Founder & CTO", image: "/Muhammad_Tayyab.webp", linkedin: "https://www.linkedin.com/in/muhammad-tayyab-sofwareengineer/" },
+  { name: "Husnain Mehmood", role: "Co-Founder & Marketing Manager", image: "/Husnain_Mehmood.webp", linkedin: "https://www.linkedin.com/in/husnain-mehmood-b977362bb/" },
+  { name: "Hammad Ahmad", role: "Co-Founder & Marketing Head", image: "/Hammad_Ahmad.webp", linkedin: "https://www.linkedin.com/in/hammad-ahmad-0b1b3b1b3/" }
+];
+
 export default function Home() {
   const { user, isAuthenticated } = useAuth();
   const [comment, setComment] = useState("");
@@ -54,12 +64,12 @@ export default function Home() {
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 0);
-    
+
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener("mousemove", handleMouseMove);
-    
+
     // Load comments from API
     const loadComments = async () => {
       try {
@@ -77,7 +87,7 @@ export default function Home() {
       }
     };
     loadComments();
-    
+
     return () => {
       clearTimeout(timer);
       window.removeEventListener("mousemove", handleMouseMove);
@@ -250,21 +260,21 @@ export default function Home() {
       <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-[#0a0a0a]">
-          <div 
+          <div
             className="absolute top-0 right-0 w-[700px] h-[700px] bg-[#00d28d]/10 blur-[140px] rounded-full animate-float"
             style={{
               transform: `translate(${mousePosition.x * 0.03}px, ${mousePosition.y * 0.03}px)`,
               animationDelay: '0s'
             }}
           ></div>
-          <div 
+          <div
             className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#4a90e2]/10 blur-[120px] rounded-full animate-float"
             style={{
               animationDelay: '3s',
               transform: `translate(${-mousePosition.x * 0.02}px, ${-mousePosition.y * 0.02}px)`
             }}
           ></div>
-          <div 
+          <div
             className="absolute top-1/2 left-1/2 w-[500px] h-[500px] bg-[#00d28d]/5 blur-[100px] rounded-full animate-float"
             style={{
               animationDelay: '1.5s',
@@ -300,7 +310,7 @@ export default function Home() {
               <Link href="/contact">
                 <button className="group relative px-8 py-6 bg-[#00d28d] text-[#0a0a0a] rounded-full font-bold text-base overflow-hidden hover-lift animate-glow">
                   <span className="relative z-10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                    Get Free Consultation 
+                    Get Free Consultation
                     <ArrowRight size={20} className="ml-2 group-hover:translate-x-3 transition-transform duration-300" />
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-[#00d28d] via-[#00b377] to-[#00d28d] opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[length:200%_100%] animate-gradient"></div>
@@ -388,14 +398,14 @@ export default function Home() {
               <div
                 key={idx}
                 className="group bg-[#111] p-8 rounded-2xl border border-white/5 hover:border-[#00d28d]/60 transition-all duration-700 card-3d hover-lift relative overflow-hi  dden"
-                style={{ 
+                style={{
                   animation: `slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards`,
                   animationDelay: `${idx * 0.15}s`,
                   opacity: 0
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-[#00d28d]/0 via-[#00d28d]/0 to-[#00d28d]/0 group-hover:from-[#00d28d]/10 group-hover:via-[#00d28d]/15 group-hover:to-[#00d28d]/10 transition-all duration-700"></div>
-                
+
                 <div className="relative z-10">
                   <div className="w-16 h-16 bg-gradient-to-br from-[#00d28d]/30 to-[#4a90e2]/30 rounded-xl flex items-center justify-center text-[#00d28d] mb-6 group-hover:scale-125 group-hover:rotate-12 transition-all duration-700 animate-glow">
                     <service.icon size={32} className="group-hover:animate-pulse" style={{ animationDuration: '1s' }} />
@@ -415,7 +425,7 @@ export default function Home() {
                     ))}
                   </ul>
                 </div>
-                
+
                 <div className="absolute top-0 right-0 w-40 h-40 bg-[#00d28d]/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#4a90e2]/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               </div>
@@ -475,6 +485,62 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Team Section */}
+      <section className="py-20 bg-[#0a0a0a]">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <span className="text-[#00d28d] font-bold tracking-wider uppercase text-sm animate-glow">Our Team</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mt-4">Meet The Experts</h2>
+            <p className="text-[#888] text-lg mt-4">
+              Passionate professionals dedicated to your success
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6">
+            {teamMembers.map((member, idx) => (
+              <div
+                key={idx}
+                className="group bg-[#111] p-6 rounded-2xl border border-white/10 hover:border-[#00d28d]/50 transition-all duration-500 hover-lift text-center"
+              >
+                <div className="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden border-4 border-[#686969]/10 group-hover:border-[#787979] group-hover:scale-105 transition-all duration-500">
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    width={200}
+                    height={200}
+                    className="w-full h-full object-cover"
+                    quality={100}
+                    priority
+                  />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-1 group-hover:text-[#00d28d] transition-colors duration-300">
+                  {member.name}
+                </h3>
+                <p className="text-[#888] text-sm group-hover:text-[#aaa] transition-colors duration-300 mb-4">
+                  {member.role}
+                </p>
+
+                {/* LinkedIn and Portfolio Buttons */}
+                <div className="flex justify-center gap-3">
+                  <Link href={member.linkedin || "#"} target="_blank" rel="noopener noreferrer">
+                    <button className="group flex items-center gap-2 px-4 py-2 text-xs font-medium text-white bg-transparent border border-white/20 hover:border-[#00d28d] hover:bg-[#00d28d]/10 rounded-full transition-all duration-300">
+                      <Linkedin size={14} className="group-hover:text-[#00d28d] transition-colors duration-300" />
+                      LinkedIn
+                    </button>
+                  </Link>
+                  <Link href="/portfolio">
+                    <button className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-[#0a0a0a] bg-[#00d28d] hover:bg-[#00a86f] rounded-full transition-colors duration-300">
+                      <Briefcase size={14} />
+                      Portfolio
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Why Choose Us Section */}
       <section className="py-20 lg:py-32 bg-gradient-to-b from-[#111]/50 to-[#0a0a0a]">
         <div className="max-w-7xl mx-auto px-4">
@@ -507,7 +573,7 @@ export default function Home() {
               <Link href="/contact">
                 <button className="group mt-6 px-8 py-6 bg-[#00d28d] text-[#0a0a0a] rounded-full font-bold text-base hover-lift relative overflow-hidden animate-glow">
                   <span className="relative z-10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                    Start Your Digital Journey 
+                    Start Your Digital Journey
                     <ArrowRight size={20} className="ml-2 group-hover:translate-x-3 transition-transform duration-300" />
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-[#00d28d] via-[#00b377] to-[#00d28d] opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[length:200%_100%] animate-gradient"></div>
@@ -565,7 +631,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             {comments.map((c, idx) => (
-              <div key={c.id} className="group bg-[#111] p-6 rounded-2xl border border-white/10 hover:border-[#00d28d]/60 transition-all duration-700 hover-lift animate-pulse-border" style={{ 
+              <div key={c.id} className="group bg-[#111] p-6 rounded-2xl border border-white/10 hover:border-[#00d28d]/60 transition-all duration-700 hover-lift animate-pulse-border" style={{
                 animation: `slide-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards`,
                 animationDelay: `${idx * 0.2}s`,
                 opacity: 0
@@ -599,8 +665,8 @@ export default function Home() {
                 onChange={(e) => setComment(e.target.value)}
               />
               {status && <p className={`text-sm ${status.includes("success") ? "text-green-500" : "text-red-500"}`}>{status}</p>}
-              <button 
-                onClick={handleCommentSubmit} 
+              <button
+                onClick={handleCommentSubmit}
                 disabled={loading}
                 className="group w-full sm:w-auto px-8 py-3 bg-[#00d28d] text-[#0a0a0a] rounded-full font-bold hover-lift relative overflow-hidden animate-glow disabled:opacity-50 disabled:cursor-not-allowed"
               >

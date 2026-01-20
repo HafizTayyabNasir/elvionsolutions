@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
     Target,
@@ -21,8 +20,6 @@ import {
     Star,
     Coffee,
     Clock,
-    Linkedin,
-    Briefcase,
     Shield
 } from "lucide-react";
 
@@ -39,12 +36,13 @@ export default function About() {
         return () => window.removeEventListener("mousemove", handleMouseMove);
     }, []);
 
-    const teamMembers = [
-        { name: "Muhammad Zohaib Tabassum", role: "CEO & Founder", image: "/Zohaib_Tabassum.webp", linkedin: "https://www.linkedin.com/in/mzohaibtabassum-softwareengineer/" },
-        { name: "Muhammad Tayyab", role: "Co-Founder & Chief Technology Officer", image: "/Muhammad_Tayyab.webp", linkedin: "https://www.linkedin.com/in/muhammad-tayyab-sofwareengineer/" },
-        { name: "Husnain Mehmood", role: "Co-Founder & Marketing Manager", image: "/Husnain_Mehmood.webp", linkedin: "https://www.linkedin.com/in/husnain-mehmood-b977362bb/" },
-        { name: "Hammad Ahmad", role: "Co-Founder & Marketing Head", image: "/Hammad_Ahmad.webp", linkedin: "https://www.linkedin.com/in/hammad-ahmad-0b1b3b1b3/" }
-    ];
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            setMousePosition({ x: e.clientX, y: e.clientY });
+        };
+        window.addEventListener("mousemove", handleMouseMove);
+        return () => window.removeEventListener("mousemove", handleMouseMove);
+    }, []);
 
     const coreValues = [
         { icon: Heart, title: "Passion", desc: "We love what we do and it shows in every project" },
@@ -356,61 +354,7 @@ export default function About() {
                 </div>
             </section>
 
-            {/* Team Section */}
-            <section className="py-20 bg-[#0a0a0a]">
-                <div className="max-w-6xl mx-auto px-4">
-                    <div className="text-center mb-12">
-                        <span className="text-[#00d28d] font-bold tracking-wider uppercase text-sm animate-glow">Our Team</span>
-                        <h2 className="text-4xl md:text-5xl font-bold text-white mt-4">Meet The Experts</h2>
-                        <p className="text-[#888] text-lg mt-4">
-                            Passionate professionals dedicated to your success
-                        </p>
-                    </div>
 
-                    <div className="grid md:grid-cols-4 gap-6">
-                        {teamMembers.map((member, idx) => (
-                            <div
-                                key={idx}
-                                className="group bg-[#111] p-6 rounded-2xl border border-white/10 hover:border-[#00d28d]/50 transition-all duration-500 hover-lift text-center"
-                            >
-                                <div className="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden border-4 border-[#686969]/10 group-hover:border-[#787979] group-hover:scale-105 transition-all duration-500">
-                                    <Image
-                                        src={member.image}
-                                        alt={member.name}
-                                        width={200}
-                                        height={200}
-                                        className="w-full h-full object-cover"
-                                        quality={100}
-                                        priority
-                                    />
-                                </div>
-                                <h3 className="text-xl font-bold text-white mb-1 group-hover:text-[#00d28d] transition-colors duration-300">
-                                    {member.name}
-                                </h3>
-                                <p className="text-[#888] text-sm group-hover:text-[#aaa] transition-colors duration-300 mb-4">
-                                    {member.role}
-                                </p>
-
-                                {/* LinkedIn and Portfolio Buttons */}
-                                <div className="flex justify-center gap-3">
-                                    <Link href={member.linkedin || "#"} target="_blank" rel="noopener noreferrer">
-                                        <button className="group flex items-center gap-2 px-4 py-2 text-xs font-medium text-white bg-transparent border border-white/20 hover:border-[#00d28d] hover:bg-[#00d28d]/10 rounded-full transition-all duration-300">
-                                            <Linkedin size={14} className="group-hover:text-[#00d28d] transition-colors duration-300" />
-                                            LinkedIn
-                                        </button>
-                                    </Link>
-                                    <Link href="/portfolio">
-                                        <button className="flex items-center gap-2 px-4 py-2 text-xs font-medium text-[#0a0a0a] bg-[#00d28d] hover:bg-[#00a86f] rounded-full transition-colors duration-300">
-                                            <Briefcase size={14} />
-                                            Portfolio
-                                        </button>
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
             {/* Why Choose Us Section */}
             <section className="py-20 bg-gradient-to-b from-[#111]/50 to-[#0a0a0a]">
