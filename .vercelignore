@@ -1,0 +1,4 @@
+# Vercel Build Configuration
+node_modules
+.next
+.git
