@@ -24,8 +24,8 @@ export function useMarketiQChat() {
       setError(null);
 
       try {
-        // Get auth token from localStorage (matches AuthContext token key)
-        const token = localStorage.getItem("token");
+        // Get auth token from localStorage
+        const token = localStorage.getItem("authToken");
         if (!token) {
           setError("Please login to use MarketiQ");
           setIsLoading(false);
@@ -49,7 +49,7 @@ export function useMarketiQChat() {
         if (!response.ok) {
           if (response.status === 401) {
             setError("Session expired. Please login again.");
-            localStorage.removeItem("token");
+            localStorage.removeItem("authToken");
           } else {
             setError("Failed to get response");
           }
