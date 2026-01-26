@@ -1,1 +1,0 @@
-export { useMarketiQChat } from "./useMarketiQChat";
