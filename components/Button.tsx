@@ -1,30 +1,29 @@
-import React from "react";
 import { cn } from "@/lib/utils";
+import React from "react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "outline";
-  children: React.ReactNode;
+    variant?: "primary" | "outline";
 }
 
-export const Button: React.FC<ButtonProps> = ({
-  variant = "primary",
-  className,
-  children,
-  ...props
-}) => {
-  return (
-    <button
-      className={cn(
-        "px-6 py-3 rounded-lg font-semibold transition-colors",
-        variant === "primary"
-          ? "bg-elvion-primary text-black hover:bg-elvion-accent"
-          : "border border-white/20 text-white hover:bg-white/10",
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </button>
-  );
+export const Button = ({
+    className,
+    variant = "primary",
+    ...props
+}: ButtonProps) => {
+    const baseStyles =
+        "px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2";
+    const variants = {
+        primary:
+            "bg-elvion-primary text-black hover:bg-elvion-accent hover:shadow-[0_0_15px_rgba(0,210,141,0.5)]",
+        outline:
+            "border-2 border-elvion-primary text-elvion-primary hover:bg-elvion-primary hover:text-black",
+    };
+
+    return (
+        <button
+            className={cn(baseStyles, variants[variant], className)}
+            {...props}
+        />
+    );
 };
 

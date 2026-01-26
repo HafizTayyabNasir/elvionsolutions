@@ -24,17 +24,17 @@ model Message {
   name      String
   email     String
   message   String
-  date      DateTime @default(now())
+  date      DateTime @default(now()) // Stored as ISO string or Date object
   createdAt DateTime @default(now())
 }
 
 model Slot {
   id           Int      @id @default(autoincrement())
-  date         String
-  time         String
+  date         String   // YYYY-MM-DD
+  time         String   // HH:mm
   isBooked     Boolean  @default(false)
-  bookedBy     String?
-  bookedByName String?
+  bookedBy     String?  // Email of user who booked
+  bookedByName String?  // Name of user who booked
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -56,8 +56,8 @@ model InternshipApplication {
   expectations    String?
   cvFileName      String?
   cvFileUrl       String?
-  cvFileData      String?  @db.Text
-  cvFileType      String?
+  cvFileData      String?  @db.Text // Base64 encoded file data
+  cvFileType      String?  // MIME type (e.g., application/pdf)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
