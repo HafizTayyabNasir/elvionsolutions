@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+type CommentRow = { id: number; userName: string; text: string; date: Date };
 
 export async function GET() {
   try {
@@ -10,7 +11,7 @@ export async function GET() {
     // Format date if needed, or send as is (ISO string is standard)
     // Admin dashboard might expect ISO string or specific format.
     // Based on messages, it likely expects string.
-    const formatted = comments.map(c => ({
+    const formatted = comments.map((c: CommentRow) => ({
         id: c.id,
         user_name: c.userName,
         text: c.text,

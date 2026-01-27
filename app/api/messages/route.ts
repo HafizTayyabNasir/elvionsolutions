@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+type MessageRow = { id: number; name: string; email: string; message: string; date: Date };
 
 export async function POST(request: Request) {
   try {
@@ -27,7 +28,7 @@ export async function GET() {
       orderBy: { date: 'desc' },
     });
     
-    const formattedMessages = messages.map(msg => ({
+    const formattedMessages = messages.map((msg: MessageRow) => ({
         ...msg,
         date: msg.date.toISOString().split('T')[0]
     }));

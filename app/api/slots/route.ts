@@ -1,5 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+type SlotRow = {
+  id: number;
+  date: string;
+  time: string;
+  isBooked: boolean;
+  bookedBy: string | null;
+  bookedByName: string | null;
+};
 
 export async function GET() {
   try {
@@ -8,7 +16,7 @@ export async function GET() {
       orderBy: [{ date: 'asc' }, { time: 'asc' }]
     });
 
-    return NextResponse.json(slots.map(s => ({
+    return NextResponse.json(slots.map((s: SlotRow) => ({
       id: s.id,
       date: s.date,
       time: s.time,

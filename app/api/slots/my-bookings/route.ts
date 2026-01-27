@@ -1,6 +1,14 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import jwt from 'jsonwebtoken';
+type SlotRow = {
+    id: number;
+    date: string;
+    time: string;
+    isBooked: boolean;
+    bookedBy: string | null;
+    bookedByName: string | null;
+};
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
@@ -38,7 +46,7 @@ export async function GET(request: Request) {
             ]
         });
 
-        return NextResponse.json(bookedSlots.map(s => ({
+        return NextResponse.json(bookedSlots.map((s: SlotRow) => ({
             id: s.id,
             date: s.date,
             time: s.time,
